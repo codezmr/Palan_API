@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codezmr.constants.AppConstatnts;
 import com.codezmr.entity.Plan;
 import com.codezmr.props.AppProperties;
 import com.codezmr.service.PlanService;
@@ -22,7 +23,7 @@ import com.codezmr.service.PlanService;
 public class PlanRestController {
 
 	private Map<String, String> message;
-
+	
 	private PlanService planService;
 
 	private AppProperties appProperties;
@@ -41,13 +42,13 @@ public class PlanRestController {
 	@PostMapping("/plan")
 	public ResponseEntity<String> savePlan(@RequestBody Plan plan) {
 
-		String responseMsg = "";
+		String responseMsg = AppConstatnts.EMPTY_STR ;
 		boolean isSaved = planService.savePlan(plan);
 
 		if (isSaved) {
-			responseMsg = message.get("planSaveSucc");
+			responseMsg = message.get(AppConstatnts.PLAN_SAVE_SUCC);
 		} else {
-			responseMsg = message.get("planSaveFail");
+			responseMsg = message.get(AppConstatnts.PLAN_SAVE_FAIL);
 		}
 
 		return new ResponseEntity<>(responseMsg, HttpStatus.CREATED);
@@ -76,9 +77,9 @@ public class PlanRestController {
 
 		if (isUpdated) {
 
-			msg = message.get("planUpdateSucc");
+			msg = message.get(AppConstatnts.PLAN_UPDATE_SUCC);
 		} else {
-			msg = message.get("planUpdateFail");
+			msg = message.get(AppConstatnts.PLAN_UPDATE_FAIL);
 		}
 		return new ResponseEntity<>(msg, HttpStatus.OK);
 
@@ -93,9 +94,9 @@ public class PlanRestController {
 
 		if (isDeleted) {
 
-			msg = message.get("planDeleteSucc");
+			msg = message.get(AppConstatnts.PLAN_DELETE_SUCC);
 		} else {
-			msg = message.get("planDeleteFail");
+			msg = message.get(AppConstatnts.PLAN_DELETE_FAIL);
 		}
 		return new ResponseEntity<>(msg, HttpStatus.OK);
 
@@ -110,9 +111,9 @@ public class PlanRestController {
 
 		if (isStatusChanged) {
 
-			msg = message.get("planStatusChange");
+			msg = message.get(AppConstatnts.PLAN_STATUS_CHANGE);
 		} else {
-			msg = message.get("planStatusChangeFail");
+			msg = message.get(AppConstatnts.PLAN_STATUS_CHANGE_FAIL);
 		}
 		return new ResponseEntity<>(msg, HttpStatus.OK);
 
