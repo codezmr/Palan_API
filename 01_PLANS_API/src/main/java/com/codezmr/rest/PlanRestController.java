@@ -15,13 +15,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codezmr.entity.Plan;
+import com.codezmr.props.AppProperties;
 import com.codezmr.service.PlanService;
 
 @RestController
 public class PlanRestController {
 
-	@Autowired
+	private Map<String, String> message;
+
 	private PlanService planService;
+
+	private AppProperties appProperties;
+
+	public PlanRestController(PlanService planService, AppProperties appProperties) {
+		this.planService = planService;
+		this.message = appProperties.getMessage();
+	}
 
 	@GetMapping("/categories")
 	public ResponseEntity<Map<Integer, String>> planCategories() {
@@ -36,9 +45,9 @@ public class PlanRestController {
 		boolean isSaved = planService.savePlan(plan);
 
 		if (isSaved) {
-			responseMsg = "Plan Saved";
+			responseMsg = message.get("planSaveSucc");
 		} else {
-			responseMsg = "Plan not saved";
+			responseMsg = message.get("planSaveFail");
 		}
 
 		return new ResponseEntity<>(responseMsg, HttpStatus.CREATED);
@@ -58,6 +67,7 @@ public class PlanRestController {
 		return new ResponseEntity<>(plan, HttpStatus.OK);
 
 	}
+
 	@PutMapping("/plan")
 	public ResponseEntity<String> updatePlan(Plan plan) {
 		boolean isUpdated = planService.updatePlan(plan);
@@ -66,9 +76,9 @@ public class PlanRestController {
 
 		if (isUpdated) {
 
-			msg = "Plan updated";
+			msg = message.get("planUpdateSucc");
 		} else {
-			msg = "Plan Not updated";
+			msg = message.get("planUpdateFail");
 		}
 		return new ResponseEntity<>(msg, HttpStatus.OK);
 
@@ -83,16 +93,16 @@ public class PlanRestController {
 
 		if (isDeleted) {
 
-			msg = "Plan Deleted";
+			msg = message.get("planDeleteSucc");
 		} else {
-			msg = "Plan Not Deleted";
+			msg = message.get("planDeleteFail");
 		}
 		return new ResponseEntity<>(msg, HttpStatus.OK);
 
 	}
 
 	@PutMapping("/status-change/{planId}/{status}")
-	public ResponseEntity<String> statusChange( @PathVariable Integer planId, @PathVariable String status) {
+	public ResponseEntity<String> statusChange(@PathVariable Integer planId, @PathVariable String status) {
 
 		boolean isStatusChanged = planService.planStatusChange(planId, status);
 
@@ -100,9 +110,9 @@ public class PlanRestController {
 
 		if (isStatusChanged) {
 
-			msg = "Plan Status Changed";
+			msg = message.get("planStatusChange");
 		} else {
-			msg = "Plan Status Not Changed";
+			msg = message.get("planStatusChangeFail");
 		}
 		return new ResponseEntity<>(msg, HttpStatus.OK);
 
