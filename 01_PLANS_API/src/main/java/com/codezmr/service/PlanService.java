@@ -8,6 +8,7 @@ import com.codezmr.entity.Plan;
 public interface PlanService {
 	
 	public Map<Integer, String> getPlanCategories();
+	
 	public boolean savePlan(Plan plan);
 	
 	public List<Plan> getAllPlans();
